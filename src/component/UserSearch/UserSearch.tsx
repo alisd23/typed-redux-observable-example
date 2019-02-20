@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Input, Image, Card, Message, Loader } from 'semantic-ui-react'
 
 import useDebounce from '../../hooks/useDebounce';
 import { connect } from 'react-redux';
@@ -12,23 +13,37 @@ interface UserSearchResultProps {
 };
 
 const UserSearchResult: React.FunctionComponent<UserSearchResultProps> = ({ user, error, loading }) => {
-  if (loading) {
-    return <p>loading</p>;
-  }
   if (error) {
-    return <p>{error}</p>;
+    return (
+      <Message warning>
+        <Message.Header>An Error Occurred</Message.Header>
+        <p>{error}</p>
+      </Message>
+    );
   }
   if (user) {
     return (
-      <div className="user-info">
-        <p>Username: {user.login}</p>
-        <p>Name: {user.name}</p>
-        <p>Bio: {user.bio}</p>
-        <p>Company: {user.company}</p>
-      </div>
-    )
-  } else { 
-    return <p>User not found</p>;
+      <Card centered>
+        <Image
+          fluid
+          src={user.avatar_url}
+        />
+        <Card.Content>
+          <Card.Header>{user.name}</Card.Header>
+          <Card.Meta>{user.login}</Card.Meta>
+          <Card.Description>{user.bio}</Card.Description>
+        </Card.Content>
+        <Card.Content extra>
+          <span>Company: {user.company}</span>
+        </Card.Content>
+      </Card>
+    );
+  } else {
+    return (
+      <Message info>
+        <Message.Header>No user found</Message.Header>
+      </Message>
+    );
   }
 };
 
@@ -46,13 +61,18 @@ const UserSearch: React.FunctionComponent<UserSearchProps> = ({ user, error, loa
 
   function onUsernameChange(newUsername: string) {
     setUsername(newUsername);
-    debouncedFetchUser(newUsername);
+    if (newUsername) {
+      debouncedFetchUser(newUsername);
+    }
   }
 
   return (
     <div>
-      <input
+      <Input
         value={username}
+        loading={loading}
+        placeholder="Search GitHub usernames"
+        fluid
         onChange={e => onUsernameChange(e.target.value)}
       />
       <UserSearchResult

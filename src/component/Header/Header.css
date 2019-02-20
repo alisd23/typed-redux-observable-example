@@ -1,4 +1,4 @@
-.header {
+.app-header {
   background-color: #282c34;
   min-height: 100px;
   display: flex;
@@ -7,7 +7,7 @@
   justify-content: center;
 }
 
-.header-logo {
+.app-header-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 60px;
   pointer-events: none;

@@ -8,7 +8,9 @@ import UserSearch from '../UserSearch';
 const App: FunctionComponent = () =>(
   <div className="App">
     <Header />
-    <UserSearch />
+    <div className="app-content">
+      <UserSearch />
+    </div>
   </div>
 );
 
